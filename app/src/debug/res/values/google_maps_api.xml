@@ -1,0 +1,26 @@
+<resources>
+    <!--
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=39:8E:12:D4:32:FF:6A:AE:5B:D5:C2:6B:64:18:C4:C7:82:30:E9:AA%3Bcom.wilson.sodainmind.activities
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    39:8E:12:D4:32:FF:6A:AE:5B:D5:C2:6B:64:18:C4:C7:82:30:E9:AA
+
+    SHA-1 certificate fingerprint:
+    39:8E:12:D4:32:FF:6A:AE:5B:D5:C2:6B:64:18:C4:C7:82:30:E9:AA
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+
+    <!-- use API key of GEO api which will work for both Map and Places api -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyB4TXRoeDZaMPngGXOQ-u_M8fv00G8rYt0
+    </string>
+</resources>

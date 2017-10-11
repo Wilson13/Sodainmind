@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#7bbcc3</color><!-- #3EC5CC -->
+    <color name="colorPrimaryDark">#14a4b4</color> <!-- 25323a -->
+    <color name="colorAccent">#037EFF</color> <!-- #ff4081 -->
+    <color name="colorBackground">@color/colorWhiteBackground</color> <!-- #354854 -->
+    <color name="colorHint">#a2afb6</color>
+    <color name="colorTabTitle">#717a7f</color>
+    <color name="colorPureWhite">#FFFFFFFF</color>
+    <color name="colorWeatherBg">#515970</color> <!-- #F9D0C0-->
+    <color name="colorWeatherBgTransparent">#CC515970</color>
+    <color name="colorWhiteBackground">#F9F9F8</color>
+    <color name="colorLineDivider">#E3E7E9</color>
+    <color name="colorEmptyTint">#A0B4D3</color>
+    <color name="colorBlack">#000000</color>
+</resources>
