@@ -37,7 +37,7 @@ import com.google.gson.Gson;
 import com.wilson.sodainmind.Pojo.NearbyPlacesPOJO;
 import com.wilson.sodainmind.Pojo.NearbyPlacesPOJO.Results;
 import com.wilson.sodainmind.R;
-import com.wilson.sodainmind.others.ShareInstance;
+import com.wilson.sodainmind.others.Constants;
 import com.wilson.sodainmind.others.VolleySingleton;
 
 import org.json.JSONObject;
@@ -117,7 +117,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Locati
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         zoomInLocation(latLng, getString(R.string.current_location));
         getNearbyRestaurant(latLng);
-        getNearbyCafe(latLng);
         getNearbyATM(latLng);
         getNearbyHospital(latLng);
     }
@@ -192,7 +191,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Locati
                             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                             zoomInLocation(latLng, getString(R.string.current_location));
                             getNearbyRestaurant(latLng);
-                            getNearbyCafe(latLng);
                             getNearbyATM(latLng);
                             getNearbyHospital(latLng);
                         }
@@ -202,7 +200,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Locati
 
     private void getNearbyRestaurant(LatLng latLng) {
         String urlParameter = "&type=restaurant&location=" + latLng.latitude + "," + latLng.longitude;
-        String url = ShareInstance.NEARBY_PLACES_URL + urlParameter;
+        String url = Constants.NEARBY_PLACES_URL + urlParameter;
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -236,45 +234,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Locati
         VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsObjRequest);
     }
 
-    private void getNearbyCafe(LatLng latLng) {
-        String urlParameter = "&type=cafe&location=" + latLng.latitude + "," + latLng.longitude;
-        String url = ShareInstance.NEARBY_PLACES_URL + urlParameter;
-
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Gson gson = new Gson();
-                        String json = response.toString();
-                        NearbyPlacesPOJO pojo = gson.fromJson(json, NearbyPlacesPOJO.class);
-                        Results[] results = pojo.getResults();
-
-                        for (Results item : results){
-                            double lat = Double.valueOf(item.getGeometry().getLocation().getLat());
-                            double lng = Double.valueOf(item.getGeometry().getLocation().getLng());
-                            LatLng latLng = new LatLng(lat, lng);
-                            mMap.addMarker(new MarkerOptions()
-                                    .position(latLng)
-                                    .title(item.getName())
-                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-        // Access the RequestQueue through your singleton class.
-        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsObjRequest);
-    }
-
     private void getNearbyATM(LatLng latLng) {
         String urlParameter = "&type=atm&location=" + latLng.latitude + "," + latLng.longitude;
-        String url = ShareInstance.NEARBY_PLACES_URL + urlParameter;
+        String url = Constants.NEARBY_PLACES_URL + urlParameter;
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -310,7 +272,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Locati
 
     private void getNearbyHospital(LatLng latLng) {
         String urlParameter = "&type=hospital&location=" + latLng.latitude + "," + latLng.longitude;
-        String url = ShareInstance.NEARBY_PLACES_URL + urlParameter;
+        String url = Constants.NEARBY_PLACES_URL + urlParameter;
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {

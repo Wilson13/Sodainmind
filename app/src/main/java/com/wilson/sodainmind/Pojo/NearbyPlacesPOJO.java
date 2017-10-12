@@ -1,9 +1,5 @@
 package com.wilson.sodainmind.Pojo;
 
-/**
- * Created by xyconnect on 11/10/17.
- */
-
 public class NearbyPlacesPOJO {
 
         private Results[] results;

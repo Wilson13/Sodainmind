@@ -17,8 +17,6 @@ allprojects {
         jcenter()
         maven {
             url "https://maven.google.com"
-            // required to find the dbfLOW project's artifacts
-            maven { url "https://www.jitpack.io" }
         }
     }
 }

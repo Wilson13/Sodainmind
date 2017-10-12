@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,8 +18,8 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.wilson.sodainmind.R;
-import com.wilson.sodainmind.fragments.GlobalMainFragment;
 import com.wilson.sodainmind.fragments.MainFragment;
+import com.wilson.sodainmind.fragments.PhotoFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +32,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.navigation_view) NavigationView mNavigationView;
     @BindView(R.id.iv_menu) ImageView menuIV;
+    PlaceAutocompleteFragment autocompleteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        init();
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
@@ -59,7 +60,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             // Not very clear about this but SupportPlaceAutocompleteFragment seems not
             // to be working hence PlaceAutocompleteFragment is used and can't be nested
             // in another fragment.
-            PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+            autocompleteFragment = (PlaceAutocompleteFragment)
                     getFragmentManager().findFragmentById(R.id.place_fragment);
 
             autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -112,10 +113,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 switch (item.getItemId()) {
                     case R.id.nav_home:
                         if (!(displayFragment instanceof MainFragment)) {
-                            //getSupportFragmentManager().beginTransaction()
-                                    //.replace(R.id.fl_main, MainFragment.newInstance()).commit();
-                            menuIV.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.colorPureWhite));
+                            // Show maim fragment if not displayed
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fl_main, MainFragment.newInstance()).commit();
 
+                            // Show search box
+                            autocompleteFragment.getView().setVisibility(View.VISIBLE);
                             // Close drawer after actions finished
                             mDrawerLayout.closeDrawer(Gravity.START);
                         } else {
@@ -124,10 +127,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         }
                         break;
                     case R.id.nav_global:
-                        if (!(displayFragment instanceof GlobalMainFragment)) {
+                        if (!(displayFragment instanceof PhotoFragment)) {
                             getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fl_main, GlobalMainFragment.newInstance()).commit();
-                            menuIV.setColorFilter(ContextCompat.getColor(MainActivity.this, R.color.colorTabTitle));
+                                    .replace(R.id.fl_main, PhotoFragment.newInstance()).commit();
+
+                            // Hide search box
+                            autocompleteFragment.getView().setVisibility(View.GONE);
 
                             // Close drawer after actions finished
                             mDrawerLayout.closeDrawer(Gravity.START);
