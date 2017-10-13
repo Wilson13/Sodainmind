@@ -37,7 +37,7 @@ import com.google.gson.Gson;
 import com.wilson.sodainmind.Pojo.NearbyPlacesPOJO;
 import com.wilson.sodainmind.Pojo.NearbyPlacesPOJO.Results;
 import com.wilson.sodainmind.R;
-import com.wilson.sodainmind.others.Constants;
+import com.wilson.sodainmind.others.ShareInstance;
 import com.wilson.sodainmind.others.VolleySingleton;
 
 import org.json.JSONObject;
@@ -52,14 +52,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Locati
     private GoogleMap mMap;
     private Marker mMarker;
     private FusedLocationProviderClient mFusedLocationClient;
-    private MainFragmentInterface delegate;
 
-    public static final MainFragment newInstance() {
+    public static MainFragment newInstance() {
         return new MainFragment();
-    }
-
-    public interface MainFragmentInterface {
-        void onGoogleMapReady();
     }
 
     @Nullable
@@ -200,7 +195,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Locati
 
     private void getNearbyRestaurant(LatLng latLng) {
         String urlParameter = "&type=restaurant&location=" + latLng.latitude + "," + latLng.longitude;
-        String url = Constants.NEARBY_PLACES_URL + urlParameter;
+        String url = ShareInstance.NEARBY_PLACES_URL + urlParameter;
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -236,7 +231,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Locati
 
     private void getNearbyATM(LatLng latLng) {
         String urlParameter = "&type=atm&location=" + latLng.latitude + "," + latLng.longitude;
-        String url = Constants.NEARBY_PLACES_URL + urlParameter;
+        String url = ShareInstance.NEARBY_PLACES_URL + urlParameter;
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -272,7 +267,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Locati
 
     private void getNearbyHospital(LatLng latLng) {
         String urlParameter = "&type=hospital&location=" + latLng.latitude + "," + latLng.longitude;
-        String url = Constants.NEARBY_PLACES_URL + urlParameter;
+        String url = ShareInstance.NEARBY_PLACES_URL + urlParameter;
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -309,8 +304,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Locati
     private void showAlertDialog(FragmentActivity activity, int msgId, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(activity)
                 .setMessage(msgId)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
+                .setPositiveButton(R.string.dialog_ok, okListener)
+                .setNegativeButton(R.string.dialog_cancel, null)
                 .create()
                 .show();
     }

@@ -3,21 +3,20 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/colorWhiteBackground"
     android:layout_margin="5dp">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/zdv_photo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerInParent="true"
-        fresco:actualImageScaleType="centerCrop"
+    <com.wilson.sodainmind.facebook.samples.zoomable.ZoomableDraweeView
+        android:id="@+id/zdv_fullscreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        fresco:actualImageScaleType="fitCenter"
         fresco:placeholderImage="@drawable/default_placeholder"
-        fresco:placeholderImageScaleType="centerCrop"
+        fresco:placeholderImageScaleType="fitCenter"
         fresco:failureImage="@drawable/error_placeholder"
-        fresco:failureImageScaleType="centerCrop"
+        fresco:failureImageScaleType="fitCenter"
         fresco:retryImage="@drawable/default_placeholder"
-        fresco:retryImageScaleType="centerCrop"
+        fresco:retryImageScaleType="fitCenter"
         />
 </RelativeLayout>

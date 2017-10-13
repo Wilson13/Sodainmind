@@ -4,6 +4,5 @@
     <dimen name="main_title_size">22sp</dimen>
     <dimen name="normal_size">20sp</dimen>
     <dimen name="small_size">16sp</dimen>
-
     <dimen name="global_temp_size">40sp</dimen>
 </resources>

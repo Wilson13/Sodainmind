@@ -7,9 +7,9 @@
             android:icon="@drawable/ic_home"
             android:title="@string/nav_home" />
         <item
-            android:id="@+id/nav_global"
-            android:icon="@drawable/ic_global"
-            android:title="@string/nav_global" />
+            android:id="@+id/nav_photo"
+            android:icon="@drawable/ic_image"
+            android:title="@string/nav_photo" />
     </group>
 
 </menu>

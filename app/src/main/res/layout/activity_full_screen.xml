@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto">
-    <com.wilson.sodainmind.facebook.samples.zoomable.ZoomableDraweeView
-        android:id="@+id/zdv_fullscreen"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        fresco:fadeDuration="300"
-        fresco:actualImageScaleType="focusCrop"
-        fresco:placeholderImage="@drawable/default_placeholder"
-        fresco:placeholderImageScaleType="fitCenter"
-        fresco:failureImage="@drawable/error_placeholder"
-        fresco:failureImageScaleType="centerInside"
-        fresco:retryImage="@drawable/default_placeholder"
-        fresco:retryImageScaleType="centerInside"
-        />
+    android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_fullscreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

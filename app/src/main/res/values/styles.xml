@@ -13,31 +13,4 @@
         <item name="android:windowBackground">@drawable/background_splash</item>
 
     </style>
-
-    <style name="MyButton" parent="AppTheme">
-        <item name="android:colorButtonNormal">@color/colorPrimary</item>
-        <item name="android:textColor">@android:color/white</item>
-    </style>
-
-    <style name="MyEditText" parent="AppTheme">
-        <item name="android:textColor">@color/colorHint</item>
-        <item name="colorControlNormal">@color/colorHint</item>
-    </style>
-
-    <style name="WeatherTitle">
-        <item name="android:textColor">@color/colorPureWhite</item>
-        <item name="android:textSize">@dimen/main_title_size</item>
-    </style>
-
-    <style name="WeatherLocation">
-        <item name="android:textColor">@color/colorPureWhite</item>
-        <item name="android:textSize">@dimen/normal_size</item>
-    </style>
-
-    <style name="WeatherTemperature">
-        <item name="android:textColor">@color/colorPureWhite</item>
-        <item name="android:textSize">@dimen/temperature_size</item>
-        <item name="android:layout_marginTop">12dp</item>
-        <item name="android:layout_marginBottom">12dp</item>
-    </style>
 </resources>

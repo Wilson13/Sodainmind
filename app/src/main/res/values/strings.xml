@@ -1,28 +1,25 @@
 <resources>
     <string name="app_name">Sodainmind</string>
+
+    <!-- Main Activity -->
+    <string name="dialog_exit">Exit application?</string>
+
+    <!-- Main Fragment -->
     <string name="permission_location">Allow access to device\'s location for better user experience.</string>
     <string name="current_location">Current location</string>
 
-    <string name="day_monday">Mon</string>
-    <string name="day_tuesday">Tue</string>
-    <string name="day_wednesday">Wed</string>
-    <string name="day_thursday">Thu</string>
-    <string name="day_friday">Fri</string>
-    <string name="day_saturday">Sat</string>
-    <string name="day_sunday">Sun</string>
-    <string name="tab_today">Today</string>
-    <string name="tab_week">Week</string>
-
     <!-- Navigation -->
     <string name="nav_home">Home</string>
-    <string name="nav_global">Global</string>
+    <string name="nav_photo">Photo</string>
 
-    <!-- Weather Condition -->
-    <string name="patchy_light_rain_with_thunder">Light thunder rain</string>
-    <string name="moderate_or_heavy_rain_with_thunder">Thunder rain</string>
+    <!-- Photo Fragment -->
+    <string name="empty_photo_title">No images downloaded</string>
+    <string name="empty_photo_msg">Please check your Internet connection.</string>
 
-    <!-- Country fragment -->
-    <string name="empty_watchlist_title">No country in watchlist</string>
-    <string name="empty_watchlist_msg">Tap + to start adding countries.</string>
-    <string name="title_activity_maps">Map</string>
+    <!-- Photo Adapter -->
+    <string name="copy_clipboard">URL copied to clipboard</string>
+
+    <!-- Common -->
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
 </resources>

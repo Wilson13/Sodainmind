@@ -1,16 +1,19 @@
 package com.wilson.sodainmind.activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.common.api.Status;
@@ -32,6 +35,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.navigation_view) NavigationView mNavigationView;
     @BindView(R.id.iv_menu) ImageView menuIV;
+    @BindView(R.id.tv_title) TextView titleTV;
     PlaceAutocompleteFragment autocompleteFragment;
 
     @Override
@@ -40,43 +44,26 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        init();
+        initPlaceAutoComplete();
+        initNavigation();
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
         if (findViewById(R.id.fl_main) != null) {
-
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
-            if (savedInstanceState != null) {
-                return;
+            // Not restored from previous state
+            if (savedInstanceState == null) {
+                // Add the fragment to the 'fragment_container' FrameLayout
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fl_main, MainFragment.newInstance()).commit();
+            } else {
+                Fragment displayFragment = getSupportFragmentManager().findFragmentById(R.id.fl_main);
+                if (displayFragment != null && displayFragment instanceof  PhotoFragment) {
+                    // Change title
+                    titleTV.setText(R.string.nav_photo);
+                    // Need to re-hide search box if restored from previous state
+                    autocompleteFragment.getView().setVisibility(View.GONE);
+                }
             }
-
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fl_main, MainFragment.newInstance()).commit();
-
-            // Not very clear about this but SupportPlaceAutocompleteFragment seems not
-            // to be working hence PlaceAutocompleteFragment is used and can't be nested
-            // in another fragment.
-            autocompleteFragment = (PlaceAutocompleteFragment)
-                    getFragmentManager().findFragmentById(R.id.place_fragment);
-
-            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                @Override
-                public void onPlaceSelected(Place place) {
-                    Fragment displayFragment = getSupportFragmentManager().findFragmentById(R.id.fl_main);
-                    if (displayFragment instanceof MainFragment) {
-                        ((MainFragment)displayFragment).zoomInLocation(place.getLatLng(), place.getName().toString());
-                    }
-                }
-
-                @Override
-                public void onError(Status status) {
-                    Log.e(TAG, "An error occurred: " + status);
-                }
-            });
         }
     }
 
@@ -95,17 +82,41 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
         Fragment displayFragment = getSupportFragmentManager().findFragmentById(R.id.fl_main);
         if (mDrawerLayout.isDrawerOpen(Gravity.START)) {
             mDrawerLayout.closeDrawer(Gravity.START);
-        } //else if (displayFragment instanceof ) {
-
-        //}
+        } else if (displayFragment instanceof MainFragment) {
+            showExitDialog();
+        } else if (displayFragment instanceof PhotoFragment) {
+            // Show main fragment if not displayed
+            showHomePage();
+        }
     }
 
-    private void init() {
+    private void initPlaceAutoComplete() {
+        // Not very clear about this but SupportPlaceAutocompleteFragment seems not
+        // to be working hence PlaceAutocompleteFragment is used and can't be nested
+        // in another fragment.
+        autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                Fragment displayFragment = getSupportFragmentManager().findFragmentById(R.id.fl_main);
+                if (displayFragment instanceof MainFragment) {
+                    ((MainFragment)displayFragment).zoomInLocation(place.getLatLng(), place.getName().toString());
+                }
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.e(TAG, "An error occurred: " + status);
+            }
+        });
+    }
+
+    private void initNavigation() {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -113,37 +124,56 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 switch (item.getItemId()) {
                     case R.id.nav_home:
                         if (!(displayFragment instanceof MainFragment)) {
-                            // Show maim fragment if not displayed
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fl_main, MainFragment.newInstance()).commit();
-
-                            // Show search box
-                            autocompleteFragment.getView().setVisibility(View.VISIBLE);
-                            // Close drawer after actions finished
-                            mDrawerLayout.closeDrawer(Gravity.START);
-                        } else {
-                            // Close drawer if user selected same page
-                            mDrawerLayout.closeDrawer(Gravity.START);
+                            showHomePage();
                         }
+                        // Close drawer after home page displayed or if user selected same page
+                        mDrawerLayout.closeDrawer(Gravity.START);
                         break;
-                    case R.id.nav_global:
+                    case R.id.nav_photo:
                         if (!(displayFragment instanceof PhotoFragment)) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fl_main, PhotoFragment.newInstance()).commit();
-
-                            // Hide search box
-                            autocompleteFragment.getView().setVisibility(View.GONE);
-
-                            // Close drawer after actions finished
-                            mDrawerLayout.closeDrawer(Gravity.START);
-                        } else {
-                            // Close drawer after actions finished
-                            mDrawerLayout.closeDrawer(Gravity.START);
+                            showPhotoPage();
                         }
+                        // Close drawer after photo page displayed or if user selected same page
+                        mDrawerLayout.closeDrawer(Gravity.START);
                         break;
                 }
                 return false;
             }
         });
+    }
+
+    private void showHomePage() {
+        // Show maim fragment if not displayed
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fl_main, MainFragment.newInstance()).commit();
+
+        // Change title
+        titleTV.setText(R.string.nav_home);
+        // Show search box
+        autocompleteFragment.getView().setVisibility(View.VISIBLE);
+    }
+
+    private void showPhotoPage() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fl_main, PhotoFragment.newInstance()).commit();
+
+        // Change title
+        titleTV.setText(R.string.nav_photo);
+        // Hide search box
+        autocompleteFragment.getView().setVisibility(View.GONE);
+    }
+
+    private void showExitDialog() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.dialog_exit)
+                .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        MainActivity.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton(R.string.dialog_cancel, null)
+                .create()
+                .show();
     }
 }
